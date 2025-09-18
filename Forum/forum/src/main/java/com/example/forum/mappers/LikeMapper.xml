@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.forum.dao.LikeMapper" >
+  <resultMap id="BaseResultMap" type="com.example.forum.entity.Like" >
+    <id column="post_id" property="postId" jdbcType="INTEGER" />
+    <id column="sender_id" property="senderId" jdbcType="INTEGER" />
+    <id column="poster_id" property="posterId" jdbcType="INTEGER" />
+    <result column="likes" property="likes" jdbcType="BIT" />
+    <result column="collection" property="collection" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    post_id, sender_id, poster_id, likes, collection
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.example.forum.entity.LikeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from likes
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.example.forum.entity.LikeKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from likes
+    where post_id = #{postId,jdbcType=INTEGER}
+      and sender_id = #{senderId,jdbcType=INTEGER}
+      and poster_id = #{posterId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.example.forum.entity.LikeKey" >
+    delete from likes
+    where post_id = #{postId,jdbcType=INTEGER}
+      and sender_id = #{senderId,jdbcType=INTEGER}
+      and poster_id = #{posterId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.forum.entity.LikeExample" >
+    delete from likes
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.forum.entity.Like" >
+    insert into likes (post_id, sender_id, poster_id, 
+      likes, collection)
+    values (#{postId,jdbcType=INTEGER}, #{senderId,jdbcType=INTEGER}, #{posterId,jdbcType=INTEGER}, 
+      #{likes,jdbcType=BIT}, #{collection,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.forum.entity.Like" >
+    insert into likes
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="postId != null" >
+        post_id,
+      </if>
+      <if test="senderId != null" >
+        sender_id,
+      </if>
+      <if test="posterId != null" >
+        poster_id,
+      </if>
+      <if test="likes != null" >
+        likes,
+      </if>
+      <if test="collection != null" >
+        collection,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="postId != null" >
+        #{postId,jdbcType=INTEGER},
+      </if>
+      <if test="senderId != null" >
+        #{senderId,jdbcType=INTEGER},
+      </if>
+      <if test="posterId != null" >
+        #{posterId,jdbcType=INTEGER},
+      </if>
+      <if test="likes != null" >
+        #{likes,jdbcType=BIT},
+      </if>
+      <if test="collection != null" >
+        #{collection,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.forum.entity.LikeExample" resultType="java.lang.Integer" >
+    select count(*) from likes
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update likes
+    <set >
+      <if test="record.postId != null" >
+        post_id = #{record.postId,jdbcType=INTEGER},
+      </if>
+      <if test="record.senderId != null" >
+        sender_id = #{record.senderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.posterId != null" >
+        poster_id = #{record.posterId,jdbcType=INTEGER},
+      </if>
+      <if test="record.likes != null" >
+        likes = #{record.likes,jdbcType=BIT},
+      </if>
+      <if test="record.collection != null" >
+        collection = #{record.collection,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update likes
+    set post_id = #{record.postId,jdbcType=INTEGER},
+      sender_id = #{record.senderId,jdbcType=INTEGER},
+      poster_id = #{record.posterId,jdbcType=INTEGER},
+      likes = #{record.likes,jdbcType=BIT},
+      collection = #{record.collection,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.forum.entity.Like" >
+    update likes
+    <set >
+      <if test="likes != null" >
+        likes = #{likes,jdbcType=BIT},
+      </if>
+      <if test="collection != null" >
+        collection = #{collection,jdbcType=BIT},
+      </if>
+    </set>
+    where post_id = #{postId,jdbcType=INTEGER}
+      and sender_id = #{senderId,jdbcType=INTEGER}
+      and poster_id = #{posterId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.forum.entity.Like" >
+    update likes
+    set likes = #{likes,jdbcType=BIT},
+      collection = #{collection,jdbcType=BIT}
+    where post_id = #{postId,jdbcType=INTEGER}
+      and sender_id = #{senderId,jdbcType=INTEGER}
+      and poster_id = #{posterId,jdbcType=INTEGER}
+  </update>
+</mapper>

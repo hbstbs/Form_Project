@@ -1,0 +1,23 @@
+package com.example.forum.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+* Created by Mybatis Generator on 2022/05/18
+*/
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Posting extends PostingKey {
+    private String title;
+
+    private String label;
+
+    private Long postDate;
+
+    private String content;
+}
